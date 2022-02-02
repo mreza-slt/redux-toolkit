@@ -1,11 +1,19 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAsyncTodos } from "../features/todos/TodosSlice";
 import TodoItem from "./TodoItem";
 
 const TodoList = () => {
-  const { todos } = useSelector((state) => state.todos);
+  const { todos, loading, error } = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAsyncTodos());
+  }, []);
 
   return (
     <>
+      {loading && <p>loading...</p>}
+      {error && <p>{error}</p>}
       {todos ? (
         <ul className="list-group">
           {todos.map((todo) => (
